@@ -1,16 +1,11 @@
 [package]
-name = "ztdns"
+name = "dns"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dns = {path = "lib/dns" }
-zerotier = {path = "lib/zerotier" }
 
-[workspace]
-members = [
-    "lib/dns",
-    "lib/zerotier"
-]
+[[example]]
+name = "demo"
