@@ -5,9 +5,6 @@ use crate::query_type::QueryType;
 use crate::question::DnsQuestion;
 use crate::record::DnsRecord;
 
-type Error = Box<dyn std::error::Error>;
-type Result<T> = std::result::Result<T, Error>;
-
 #[derive(Clone, Debug)]
 pub struct DnsPacket {
     pub header: DnsHeader,
@@ -28,7 +25,7 @@ impl DnsPacket {
         }
     }
 
-    pub fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<DnsPacket> {
+    pub fn from_buffer(buffer: &mut BytePacketBuffer) -> crate::Result<DnsPacket> {
         let mut result = DnsPacket::new();
         result.header.read(buffer)?;
 
@@ -54,7 +51,7 @@ impl DnsPacket {
         Ok(result)
     }
 
-    pub fn write(&mut self, buffer: &mut BytePacketBuffer) -> Result<()> {
+    pub fn write(&mut self, buffer: &mut BytePacketBuffer) -> crate::Result<()> {
         self.header.questions = self.questions.len() as u16;
         self.header.answers = self.answers.len() as u16;
         self.header.authoritative_entries = self.authorities.len() as u16;

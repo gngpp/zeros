@@ -9,7 +9,7 @@ pub enum ResultCode {
 }
 
 impl ResultCode {
-    pub fn from_num(num: u8) -> Self {
+    pub fn from_num(num: u8) -> ResultCode {
         match num {
             1 => ResultCode::FORMERR,
             2 => ResultCode::SERVFAIL,

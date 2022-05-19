@@ -1,8 +1,5 @@
 use crate::buffer::BytePacketBuffer;
 use crate::query_type::QueryType;
-type Error = Box<dyn std::error::Error>;
-type Result<T> = std::result::Result<T, Error>;
-
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DnsQuestion {
@@ -15,7 +12,7 @@ impl DnsQuestion {
         DnsQuestion { name, qtype }
     }
 
-    pub fn read(&mut self, buffer: &mut BytePacketBuffer) -> Result<()> {
+    pub fn read(&mut self, buffer: &mut BytePacketBuffer) -> crate::Result<()> {
         buffer.read_qname(&mut self.name)?;
         self.qtype = QueryType::from_num(buffer.read_u16()?); // qtype
         let _ = buffer.read_u16()?; // class
@@ -23,7 +20,7 @@ impl DnsQuestion {
         Ok(())
     }
 
-    pub fn write(&self, buffer: &mut BytePacketBuffer) -> Result<()> {
+    pub fn write(&self, buffer: &mut BytePacketBuffer) -> crate::Result<()> {
         buffer.write_qname(&self.name)?;
 
         let typenum = self.qtype.to_num();

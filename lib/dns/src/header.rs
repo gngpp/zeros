@@ -1,7 +1,5 @@
 use crate::buffer::BytePacketBuffer;
 use crate::result::ResultCode;
-type Error = Box<dyn std::error::Error>;
-type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Clone,Debug)]
 pub struct DnsHeader {
@@ -49,7 +47,7 @@ impl DnsHeader {
         }
     }
 
-    pub fn read(&mut self, buffer: &mut BytePacketBuffer) -> Result<()> {
+    pub fn read(&mut self, buffer: &mut BytePacketBuffer) -> crate::Result<()> {
         self.id = buffer.read_u16()?;
 
         let flags = buffer.read_u16()?;
@@ -76,7 +74,7 @@ impl DnsHeader {
         Ok(())
     }
 
-    pub fn write(&self, buffer: &mut BytePacketBuffer) -> Result<()> {
+    pub fn write(&self, buffer: &mut BytePacketBuffer) -> crate::Result<()> {
         buffer.write_u16(self.id)?;
 
         buffer.write_u8(

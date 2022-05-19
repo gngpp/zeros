@@ -1,6 +1,3 @@
-type Error = Box<dyn std::error::Error>;
-type Result<T> = std::result::Result<T, Error>;
-
 pub struct BytePacketBuffer {
     pub buf: [u8; 512],
     pub pos: usize,
@@ -19,19 +16,19 @@ impl BytePacketBuffer {
         self.pos
     }
 
-    pub(crate) fn step(&mut self, steps: usize) -> Result<()> {
+    pub(crate) fn step(&mut self, steps: usize) -> crate::Result<()> {
         self.pos += steps;
 
         Ok(())
     }
 
-    fn seek(&mut self, pos: usize) -> Result<()> {
+    fn seek(&mut self, pos: usize) -> crate::Result<()> {
         self.pos = pos;
 
         Ok(())
     }
 
-    fn read(&mut self) -> Result<u8> {
+    fn read(&mut self) -> crate::Result<u8> {
         if self.pos >= 512 {
             return Err("End of buffer".into());
         }
@@ -41,27 +38,27 @@ impl BytePacketBuffer {
         Ok(res)
     }
 
-    fn get(&mut self, pos: usize) -> Result<u8> {
+    fn get(&mut self, pos: usize) -> crate::Result<u8> {
         if pos >= 512 {
             return Err("End of buffer".into());
         }
         Ok(self.buf[pos])
     }
 
-    pub fn get_range(&mut self, start: usize, len: usize) -> Result<&[u8]> {
+    pub fn get_range(&mut self, start: usize, len: usize) -> crate::Result<&[u8]> {
         if start + len >= 512 {
             return Err("End of buffer".into());
         }
         Ok(&self.buf[start..start + len as usize])
     }
 
-    pub(crate) fn read_u16(&mut self) -> Result<u16> {
+    pub(crate) fn read_u16(&mut self) -> crate::Result<u16> {
         let res = ((self.read()? as u16) << 8) | (self.read()? as u16);
 
         Ok(res)
     }
 
-    pub(crate) fn read_u32(&mut self) -> Result<u32> {
+    pub(crate) fn read_u32(&mut self) -> crate::Result<u32> {
         let res = ((self.read()? as u32) << 24)
             | ((self.read()? as u32) << 16)
             | ((self.read()? as u32) << 8)
@@ -70,7 +67,7 @@ impl BytePacketBuffer {
         Ok(res)
     }
 
-    pub(crate) fn read_qname(&mut self, outstr: &mut String) -> Result<()> {
+    pub(crate) fn read_qname(&mut self, outstr: &mut String) -> crate::Result<()> {
         let mut pos = self.pos();
         let mut jumped = false;
 
@@ -130,7 +127,7 @@ impl BytePacketBuffer {
         Ok(())
     }
 
-    fn write(&mut self, val: u8) -> Result<()> {
+    fn write(&mut self, val: u8) -> crate::Result<()> {
         if self.pos >= 512 {
             return Err("End of buffer".into());
         }
@@ -139,20 +136,20 @@ impl BytePacketBuffer {
         Ok(())
     }
 
-    pub(crate) fn write_u8(&mut self, val: u8) -> Result<()> {
+    pub(crate) fn write_u8(&mut self, val: u8) -> crate::Result<()> {
         self.write(val)?;
 
         Ok(())
     }
 
-    pub(crate) fn write_u16(&mut self, val: u16) -> Result<()> {
+    pub(crate) fn write_u16(&mut self, val: u16) -> crate::Result<()> {
         self.write((val >> 8) as u8)?;
         self.write((val & 0xFF) as u8)?;
 
         Ok(())
     }
 
-    pub fn write_u32(&mut self, val: u32) -> Result<()> {
+    pub fn write_u32(&mut self, val: u32) -> crate::Result<()> {
         self.write(((val >> 24) & 0xFF) as u8)?;
         self.write(((val >> 16) & 0xFF) as u8)?;
         self.write(((val >> 8) & 0xFF) as u8)?;
@@ -161,7 +158,7 @@ impl BytePacketBuffer {
         Ok(())
     }
 
-    pub(crate) fn write_qname(&mut self, qname: &str) -> Result<()> {
+    pub(crate) fn write_qname(&mut self, qname: &str) -> crate::Result<()> {
         for label in qname.split('.') {
             let len = label.len();
             if len > 0x34 {
@@ -179,13 +176,13 @@ impl BytePacketBuffer {
         Ok(())
     }
 
-    fn set(&mut self, pos: usize, val: u8) -> Result<()> {
+    fn set(&mut self, pos: usize, val: u8) -> crate::Result<()> {
         self.buf[pos] = val;
 
         Ok(())
     }
 
-    pub(crate) fn set_u16(&mut self, pos: usize, val: u16) -> Result<()> {
+    pub(crate) fn set_u16(&mut self, pos: usize, val: u16) -> crate::Result<()> {
         self.set(pos, (val >> 8) as u8)?;
         self.set(pos + 1, (val & 0xFF) as u8)?;
 
