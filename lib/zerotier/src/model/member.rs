@@ -1,4 +1,3 @@
-use std::fmt::{Display, Formatter};
 use serde::{Deserialize, Serialize};
 
 #[allow(non_snake_case)]
@@ -62,7 +61,7 @@ pub struct MemberConfig {
 
 impl MemberConfig {
     pub fn new() -> Self {
-        MemberConfig{
+        Self {
             activeBridge: false,
             address: None,
             authorized: false,
@@ -144,7 +143,7 @@ pub struct MemberResult {
 
 impl MemberResult {
     pub fn new() -> Self {
-        MemberResult{
+        Self {
             id: None,
             _type: None,
             clock: 0,
