@@ -1,1 +1,2 @@
-pub mod member;
+pub mod network;
+pub mod network_member;

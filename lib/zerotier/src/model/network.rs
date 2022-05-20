@@ -1,0 +1,174 @@
+#![allow(non_snake_case)]
+
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NetworkConfig {
+    #[serde(default)]
+    pub authTokens: Option<String>,
+
+    #[serde(default)]
+    pub creationTime: i64,
+
+    #[serde(default)]
+    pub capabilities: Option<Vec<String>>,
+
+    #[serde(default)]
+    pub enableBroadcast: bool,
+
+    #[serde(default)]
+    pub id: Option<String>,
+
+    #[serde(default)]
+    pub ipAssignmentPools: Vec<IpAssignmentPools>,
+
+    #[serde(default)]
+    pub lastModified: i64,
+
+    #[serde(default)]
+    pub mtu: i64,
+
+    #[serde(default)]
+    pub multicastLimit: i64,
+
+    #[serde(default)]
+    pub name: Option<String>,
+
+    #[serde(default)]
+    pub private: bool,
+
+    #[serde(default)]
+    pub remoteTraceLevel: i64,
+
+    #[serde(default)]
+    pub remoteTraceTarget: Option<String>,
+
+    #[serde(default)]
+    pub routes: Option<Vec<Routes>>,
+
+    #[serde(default)]
+    pub rules: Option<Vec<Rules>>,
+
+    #[serde(default)]
+    pub tags: Option<Vec<String>>,
+
+    #[serde(default)]
+    pub v4AssignMode: Option<V4AssignMode>,
+
+    #[serde(default)]
+    pub v6AssignMode: Option<V6AssignMode>,
+
+    #[serde(default)]
+    pub dns: Option<Dns>,
+
+    #[serde(default)]
+    pub ssoConfig: Option<SsoConfig>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Dns {
+    #[serde(default)]
+    pub domain: Option<String>,
+
+    #[serde(default)]
+    pub servers: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct IpAssignmentPools {
+    #[serde(default)]
+    pub ipRangeStart: Option<String>,
+
+    #[serde(default)]
+    pub ipRangeEnd: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NetworkResult {
+    #[serde(default)]
+    pub id: Option<String>,
+
+    #[serde(default)]
+    #[serde(rename = "type")]
+    pub _type: Option<String>,
+
+    #[serde(default)]
+    pub clock: i64,
+
+    #[serde(default)]
+    pub config: Option<NetworkConfig>,
+
+    #[serde(default)]
+    pub description: Option<String>,
+
+    #[serde(default)]
+    pub rulesSource: Option<String>,
+
+    #[serde(default)]
+    pub permissions: Option<String>,
+
+    #[serde(default)]
+    pub ownerId: Option<String>,
+
+    #[serde(default)]
+    pub onlineMemberCount: i64,
+
+    #[serde(default)]
+    pub authorizedMemberCount: i64,
+
+    #[serde(default)]
+    pub totalMemberCount: i64,
+
+    #[serde(default)]
+    pub ui: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Routes {
+    #[serde(default)]
+    pub target: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Rules {
+    #[serde(default)]
+    pub etherType: Option<i64>,
+
+    #[serde(default)]
+    pub not: Option<bool>,
+
+    #[serde(default)]
+    pub or: Option<bool>,
+
+    #[serde(rename = "type")]
+    #[serde(default)]
+    pub _type: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SsoConfig {
+    #[serde(default)]
+    pub enabled: bool,
+
+    #[serde(default)]
+    pub mode: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct V4AssignMode {
+    #[serde(default)]
+    pub zt: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct V6AssignMode {
+    #[serde(default)]
+    #[serde(rename = "6plane")]
+    pub plane6: bool,
+
+    #[serde(default)]
+    pub rfc4193: bool,
+
+    #[serde(default)]
+    pub zt: bool,
+}
