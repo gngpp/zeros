@@ -1,9 +1,9 @@
-use std::net::Ipv4Addr;
 use crate::buffer::BytePacketBuffer;
 use crate::header::DnsHeader;
 use crate::query_type::QueryType;
 use crate::question::DnsQuestion;
 use crate::record::DnsRecord;
+use std::net::Ipv4Addr;
 
 #[derive(Clone, Debug)]
 pub struct DnsPacket {
@@ -90,7 +90,7 @@ impl DnsPacket {
 
     /// A helper function which returns an iterator over all name servers in
     /// the authorities section, represented as (domain, host) tuples
-    fn get_ns<'a>(&'a self, qname: &'a str) -> impl Iterator<Item=(&'a str, &'a str)> {
+    fn get_ns<'a>(&'a self, qname: &'a str) -> impl Iterator<Item = (&'a str, &'a str)> {
         self.authorities
             .iter()
             // In practice, these are always NS records in well formed packages.

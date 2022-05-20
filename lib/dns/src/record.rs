@@ -1,6 +1,6 @@
-use std::net::{Ipv4Addr, Ipv6Addr};
 use crate::buffer::BytePacketBuffer;
 use crate::query_type::QueryType;
+use std::net::{Ipv4Addr, Ipv6Addr};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[allow(dead_code)]

@@ -1,9 +1,9 @@
-use std::net::{Ipv4Addr, UdpSocket};
 use dns::buffer::BytePacketBuffer;
 use dns::packet::DnsPacket;
 use dns::query_type::QueryType;
 use dns::question::DnsQuestion;
 use dns::result::ResultCode;
+use std::net::{Ipv4Addr, UdpSocket};
 
 fn lookup(qname: &str, qtype: QueryType, server: (Ipv4Addr, u16)) -> dns::Result<DnsPacket> {
     let socket = UdpSocket::bind(("0.0.0.0", 43210))?;
