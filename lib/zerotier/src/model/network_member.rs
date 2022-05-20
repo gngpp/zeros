@@ -3,6 +3,61 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct NetworkMemberResult {
+    #[serde(default)]
+    pub id: Option<String>,
+
+    #[serde(default)]
+    #[serde(rename = "type")]
+    pub _type: Option<String>,
+
+    #[serde(default)]
+    pub clock: i64,
+
+    #[serde(default)]
+    pub networkId: Option<String>,
+
+    #[serde(default)]
+    pub nodeId: Option<String>,
+
+    #[serde(default)]
+    pub controllerId: Option<String>,
+
+    #[serde(default)]
+    pub hidden: bool,
+
+    #[serde(default)]
+    pub name: Option<String>,
+
+    #[serde(default)]
+    pub online: bool,
+
+    #[serde(default)]
+    pub description: Option<String>,
+
+    #[serde(default)]
+    pub config: Option<NetworkMemberConfig>,
+
+    #[serde(default)]
+    pub lastOnline: i64,
+
+    #[serde(default)]
+    pub physicalAddress: Option<String>,
+
+    #[serde(default)]
+    pub physicalLocation: Option<String>,
+
+    #[serde(default)]
+    pub clientVersion: Option<String>,
+
+    #[serde(default)]
+    pub protocolVersion: i64,
+
+    #[serde(default)]
+    pub supportsRulesEngine: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NetworkMemberConfig {
     #[serde(default)]
     pub activeBridge: bool,
@@ -65,27 +120,9 @@ pub struct NetworkMemberConfig {
     pub ssoExempt: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct NetworkMemberResult {
-    #[serde(default)]
-    pub id: Option<String>,
-
-    #[serde(default)]
-    #[serde(rename = "type")]
-    pub _type: Option<String>,
-
-    #[serde(default)]
-    pub clock: i64,
-
-    #[serde(default)]
-    pub networkId: Option<String>,
-
-    #[serde(default)]
-    pub nodeId: Option<String>,
-
-    #[serde(default)]
-    pub controllerId: Option<String>,
-
+// update payload
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NetworkMemberUpdatePayload {
     #[serde(default)]
     pub hidden: bool,
 
@@ -93,28 +130,23 @@ pub struct NetworkMemberResult {
     pub name: Option<String>,
 
     #[serde(default)]
-    pub online: bool,
-
-    #[serde(default)]
     pub description: Option<String>,
 
-    pub config: Option<NetworkMemberConfig>,
+    #[serde(default)]
+    pub config: Option<NetworkMemberUpdatePayloadConfig>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NetworkMemberUpdatePayloadConfig {
+    #[serde(default)]
+    pub activeBridge: bool,
 
     #[serde(default)]
-    pub lastOnline: i64,
+    pub authorized: bool,
 
     #[serde(default)]
-    pub physicalAddress: Option<String>,
+    pub ipAssignments: Option<Vec<String>>,
 
     #[serde(default)]
-    pub physicalLocation: Option<String>,
-
-    #[serde(default)]
-    pub clientVersion: Option<String>,
-
-    #[serde(default)]
-    pub protocolVersion: i64,
-
-    #[serde(default)]
-    pub supportsRulesEngine: bool,
+    pub noAutoAssignIps: bool,
 }

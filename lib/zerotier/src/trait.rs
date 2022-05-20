@@ -12,7 +12,7 @@ pub trait NetworkCentral {
     fn update_network_config(
         &self,
         network_id: &String,
-        config: crate::NetworkConfig,
+        config: crate::NetworkUpdatePayload,
     ) -> crate::Result<crate::NetworkResult>;
 
     // Delete network.
@@ -31,19 +31,16 @@ pub trait NetworkMemberCentral {
         &self,
         network_id: &String,
         member_id: &String,
-    ) -> crate::Result<Vec<crate::NetworkMemberResult>>;
+    ) -> crate::Result<crate::NetworkMemberResult>;
 
     // Modify a network member.
     fn update_member(
         &self,
         network_id: &String,
         member_id: &String,
-    ) -> crate::Result<Vec<crate::NetworkMemberResult>>;
+        payload: crate::NetworkMemberUpdatePayload,
+    ) -> crate::Result<crate::NetworkMemberResult>;
 
     // Delete a network member.
-    fn delete_member(
-        &self,
-        network_id: &String,
-        member_id: &String,
-    ) -> crate::Result<Vec<crate::NetworkMemberResult>>;
+    fn delete_member(&self, network_id: &String, member_id: &String) -> crate::Result<()>;
 }

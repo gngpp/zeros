@@ -8,20 +8,14 @@ pub mod r#trait;
 pub type Result<T> = anyhow::Result<T>;
 pub type NetworkResult = crate::model::network::NetworkResult;
 pub type NetworkConfig = crate::model::network::NetworkConfig;
+pub type NetworkUpdatePayload = crate::model::network::NetworkUpdatePayload;
+pub type NetworkUpdatePayloadConfig = crate::model::network::NetworkUpdatePayloadConfig;
+
 pub type NetworkMemberResult = crate::model::network_member::NetworkMemberResult;
 pub type NetworkMemberConfig = crate::model::network_member::NetworkMemberConfig;
-
-#[derive(Debug)]
-pub struct Network {
-    pub id: String,
-    pub remark: Option<String>,
-}
-
-impl Network {
-    pub fn new(id: String, remark: Option<String>) -> Self {
-        Self { id, remark }
-    }
-}
+pub type NetworkMemberUpdatePayload = crate::model::network_member::NetworkMemberUpdatePayload;
+pub type NetworkMemberUpdatePayloadConfig =
+    crate::model::network_member::NetworkMemberUpdatePayloadConfig;
 
 #[cfg(test)]
 mod tests {

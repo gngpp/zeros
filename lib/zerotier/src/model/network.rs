@@ -3,87 +3,6 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct NetworkConfig {
-    #[serde(default)]
-    pub authTokens: Option<String>,
-
-    #[serde(default)]
-    pub creationTime: i64,
-
-    #[serde(default)]
-    pub capabilities: Option<Vec<String>>,
-
-    #[serde(default)]
-    pub enableBroadcast: bool,
-
-    #[serde(default)]
-    pub id: Option<String>,
-
-    #[serde(default)]
-    pub ipAssignmentPools: Vec<IpAssignmentPools>,
-
-    #[serde(default)]
-    pub lastModified: i64,
-
-    #[serde(default)]
-    pub mtu: i64,
-
-    #[serde(default)]
-    pub multicastLimit: i64,
-
-    #[serde(default)]
-    pub name: Option<String>,
-
-    #[serde(default)]
-    pub private: bool,
-
-    #[serde(default)]
-    pub remoteTraceLevel: i64,
-
-    #[serde(default)]
-    pub remoteTraceTarget: Option<String>,
-
-    #[serde(default)]
-    pub routes: Option<Vec<Routes>>,
-
-    #[serde(default)]
-    pub rules: Option<Vec<Rules>>,
-
-    #[serde(default)]
-    pub tags: Option<Vec<String>>,
-
-    #[serde(default)]
-    pub v4AssignMode: Option<V4AssignMode>,
-
-    #[serde(default)]
-    pub v6AssignMode: Option<V6AssignMode>,
-
-    #[serde(default)]
-    pub dns: Option<Dns>,
-
-    #[serde(default)]
-    pub ssoConfig: Option<SsoConfig>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Dns {
-    #[serde(default)]
-    pub domain: Option<String>,
-
-    #[serde(default)]
-    pub servers: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct IpAssignmentPools {
-    #[serde(default)]
-    pub ipRangeStart: Option<String>,
-
-    #[serde(default)]
-    pub ipRangeEnd: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
 pub struct NetworkResult {
     #[serde(default)]
     pub id: Option<String>,
@@ -124,25 +43,84 @@ pub struct NetworkResult {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Routes {
+pub struct NetworkConfig {
     #[serde(default)]
-    pub target: Option<String>,
+    pub authTokens: Option<String>,
+
+    #[serde(default)]
+    pub creationTime: i64,
+
+    #[serde(default)]
+    pub enableBroadcast: bool,
+
+    #[serde(default)]
+    pub id: Option<String>,
+
+    #[serde(default)]
+    pub ipAssignmentPools: Vec<IpAssignmentPools>,
+
+    #[serde(default)]
+    pub lastModified: i64,
+
+    #[serde(default)]
+    pub mtu: i64,
+
+    #[serde(default)]
+    pub multicastLimit: i64,
+
+    #[serde(default)]
+    pub name: Option<String>,
+
+    #[serde(default)]
+    pub private: bool,
+
+    #[serde(default)]
+    pub remoteTraceLevel: i64,
+
+    #[serde(default)]
+    pub remoteTraceTarget: Option<String>,
+
+    #[serde(default)]
+    pub routes: Option<Vec<Routes>>,
+
+    #[serde(default)]
+    pub tags: Option<Vec<String>>,
+
+    #[serde(default)]
+    pub v4AssignMode: Option<V4AssignMode>,
+
+    #[serde(default)]
+    pub v6AssignMode: Option<V6AssignMode>,
+
+    #[serde(default)]
+    pub dns: Option<Dns>,
+
+    #[serde(default)]
+    pub ssoConfig: Option<SsoConfig>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Rules {
+pub struct Dns {
     #[serde(default)]
-    pub etherType: Option<i64>,
+    pub domain: Option<String>,
 
     #[serde(default)]
-    pub not: Option<bool>,
+    pub servers: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct IpAssignmentPools {
+    #[serde(default)]
+    pub ipRangeStart: Option<String>,
 
     #[serde(default)]
-    pub or: Option<bool>,
+    pub ipRangeEnd: Option<String>,
+}
 
-    #[serde(rename = "type")]
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Routes {
     #[serde(default)]
-    pub _type: String,
+    pub target: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -171,4 +149,53 @@ pub struct V6AssignMode {
 
     #[serde(default)]
     pub zt: bool,
+}
+
+// update plaload
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NetworkUpdatePayloadConfig {
+    #[serde(default)]
+    dns: Option<Dns>,
+
+    #[serde(default)]
+    enableBroadcast: bool,
+
+    #[serde(default)]
+    ipAssignmentPools: Option<Vec<IpAssignmentPools>>,
+
+    #[serde(default)]
+    mtu: i64,
+
+    #[serde(default)]
+    multicastLimit: i64,
+
+    #[serde(default)]
+    name: Option<String>,
+
+    #[serde(default)]
+    private: bool,
+
+    #[serde(default)]
+    routes: Option<Vec<Routes>>,
+
+    #[serde(default)]
+    v4AssignMode: Option<V4AssignMode>,
+
+    #[serde(default)]
+    v6AssignMode: Option<V6AssignMode>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NetworkUpdatePayload {
+    #[serde(default)]
+    config: Option<NetworkUpdatePayloadConfig>,
+
+    #[serde(default)]
+    description: Option<String>,
+
+    #[serde(default)]
+    rulesSource: Option<String>,
+
+    #[serde(default)]
+    ownerId: Option<String>,
 }
