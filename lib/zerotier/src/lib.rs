@@ -14,8 +14,7 @@ pub type NetworkUpdatePayloadConfig = model::network::NetworkUpdatePayloadConfig
 pub type NetworkMemberResult = model::network_member::NetworkMemberResult;
 pub type NetworkMemberConfig = model::network_member::NetworkMemberConfig;
 pub type NetworkMemberUpdatePayload = model::network_member::NetworkMemberUpdatePayload;
-pub type NetworkMemberUpdatePayloadConfig =
-    model::network_member::NetworkMemberUpdatePayloadConfig;
+pub type NetworkMemberUpdatePayloadConfig = model::network_member::NetworkMemberUpdatePayloadConfig;
 
 #[cfg(test)]
 mod tests {

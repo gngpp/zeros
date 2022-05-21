@@ -1,8 +1,8 @@
-use crate::r#trait::{NetworkMemberCentral};
+use crate::r#trait::NetworkMemberCentral;
 use crate::{NetworkCentral, NetworkMemberResult, NetworkResult, Result};
 use anyhow::{anyhow, Ok};
-use std::ops::Deref;
 use reqwest::Response;
+use std::ops::Deref;
 
 #[warn(dead_code)]
 pub struct ZtNetworkCentral {
@@ -42,7 +42,12 @@ impl NetworkCentral for ZtNetworkCentral {
         } else {
             // fail status msg
             let msg = resp.text()?;
-            log::debug!("defined in file: {}, defined on line: {}\nmessage: {:?}", file!(), line!(), &msg);
+            log::debug!(
+                "defined in file: {}, defined on line: {}\nmessage: {:?}",
+                file!(),
+                line!(),
+                &msg
+            );
             Err(anyhow!(msg))
         };
     }
@@ -114,11 +119,9 @@ impl ZtNetworkMemberCentral {
             client: reqwest::Client::new(),
         }
     }
-
 }
 
 impl NetworkMemberCentral for ZtNetworkMemberCentral {
-
     fn find_network_member_list(&self, network_id: &String) -> Result<Vec<NetworkMemberResult>> {
         let url = format!("https://my.zerotier.com/api/network/{}/member", network_id);
         let bearer_token = crate::format::BaseReqFormat::format_bearer_token(&self.token);
@@ -193,7 +196,6 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
         }
         Ok(())
     }
-
 }
 
 struct CentralResponseHandler;
@@ -201,8 +203,15 @@ struct CentralResponseHandler;
 impl CentralResponseHandler {
     fn response_error_handler(resp: &mut Response) -> Option<String> {
         if !resp.status().is_success() {
-            let msg = resp.text().unwrap_or(String::from("An error occurred while extracting the body."));
-            log::debug!("defined in file: {}, defined on line: {}\nmessage: {:?}", file!(), line!(), &msg);
+            let msg = resp
+                .text()
+                .unwrap_or(String::from("An error occurred while extracting the body."));
+            log::debug!(
+                "defined in file: {}, defined on line: {}\nmessage: {:?}",
+                file!(),
+                line!(),
+                &msg
+            );
             Some(msg);
         }
         None
