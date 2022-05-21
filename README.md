@@ -1,2 +1,2 @@
-# zerotier-cli
-Support zerotier api Terminal CLI and virtual machine LAN DNS service
+# zeros
+Zerotier API Terminal CLI manages lans and provides virtual LAN DNS services
