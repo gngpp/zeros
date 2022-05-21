@@ -17,13 +17,14 @@ impl ZtNetworkCentral {
         }
     }
 
-    fn response_arr_handler(&self, mut resp: reqwest::Response) -> Result<NetworkResult> {
+    fn response_handler(&self, mut resp: reqwest::Response) -> Result<NetworkResult> {
         return if resp.status().is_success() {
             let result = resp.json::<NetworkResult>()?;
             Ok(result)
         } else {
             // fail status msg
             let msg = resp.text()?;
+            log::debug!("message at NetworkCentral - response_handler(): {}", msg.deref());
             Err(anyhow!(msg))
         };
     }
@@ -44,6 +45,7 @@ impl NetworkCentral for ZtNetworkCentral {
         } else {
             // fail status msg
             let msg = resp.text()?;
+            log::debug!("message at NetworkCentral - find_network_list(): {}", msg.deref());
             Err(anyhow!(msg))
         };
     }
@@ -57,7 +59,7 @@ impl NetworkCentral for ZtNetworkCentral {
             .header(reqwest::header::AUTHORIZATION, bearer_token)
             .body("{}")
             .send()?;
-        self.response_arr_handler(resp)
+        self.response_handler(resp)
     }
 
     fn find_network_by_id(&self, network_id: &String) -> Result<NetworkResult> {
@@ -68,7 +70,7 @@ impl NetworkCentral for ZtNetworkCentral {
             .get(url.deref())
             .header(reqwest::header::AUTHORIZATION, bearer_token)
             .send()?;
-        self.response_arr_handler(resp)
+        self.response_handler(resp)
     }
 
     fn update_network_config(
@@ -85,7 +87,7 @@ impl NetworkCentral for ZtNetworkCentral {
             .header(reqwest::header::CONTENT_TYPE, "application/json")
             .json(&payload)
             .send()?;
-        self.response_arr_handler(resp)
+        self.response_handler(resp)
     }
 
     fn delete_network(&self, network_id: &String) -> Result<()> {
@@ -98,6 +100,7 @@ impl NetworkCentral for ZtNetworkCentral {
             .send()?;
         if !resp.status().is_success() {
             let msg = resp.text()?;
+            log::debug!("message at NetworkCentral - delete_network(): {}", msg.deref());
             return Err(anyhow!(msg));
         }
         Ok(())
@@ -132,6 +135,7 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             return Ok(result);
         }
         let msg = resp.text()?;
+        log::debug!("message at NetworkMemberCentral - find_network_member_list(): {}", msg.deref());
         Err(anyhow!(msg))
     }
 
@@ -151,6 +155,7 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             return Ok(result);
         }
         let msg = resp.text()?;
+        log::debug!("message at NetworkMemberCentral - find_member(): {}", msg.deref());
         Err(anyhow!(msg))
     }
 
@@ -177,6 +182,7 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             return Ok(result);
         }
         let msg = resp.text()?;
+        log::debug!("message at NetworkMemberCentral - update_member(): {}", msg.deref());
         Err(anyhow!(msg))
     }
 
@@ -193,6 +199,7 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             .send()?;
         if !resp.status().is_success() {
             let msg = resp.text()?;
+            log::debug!("message at NetworkMemberCentral - delete_member(): {}", msg.deref());
             return Err(anyhow!(msg));
         }
         Ok(())
