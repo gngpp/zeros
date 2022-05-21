@@ -44,3 +44,4 @@ pub trait NetworkMemberCentral {
     // Delete a network member.
     fn delete_member(&self, network_id: &String, member_id: &String) -> crate::Result<()>;
 }
+

@@ -1,7 +1,8 @@
-use crate::r#trait::NetworkMemberCentral;
+use crate::r#trait::{NetworkMemberCentral};
 use crate::{NetworkCentral, NetworkMemberResult, NetworkResult, Result};
 use anyhow::{anyhow, Ok};
 use std::ops::Deref;
+use reqwest::Response;
 
 #[warn(dead_code)]
 pub struct ZtNetworkCentral {
@@ -17,16 +18,12 @@ impl ZtNetworkCentral {
         }
     }
 
-    fn response_handler(&self, mut resp: reqwest::Response) -> Result<NetworkResult> {
-        return if resp.status().is_success() {
-            let result = resp.json::<NetworkResult>()?;
-            Ok(result)
-        } else {
-            // fail status msg
-            let msg = resp.text()?;
-            log::debug!("message at NetworkCentral - response_handler(): {}", msg.deref());
-            Err(anyhow!(msg))
-        };
+    fn response_handler(&self, mut resp: Response) -> Result<NetworkResult> {
+        if let Some(x) = CentralResponseHandler::response_error_handler(&mut resp) {
+            return Err(anyhow!(x));
+        }
+        let result = resp.json::<NetworkResult>()?;
+        Ok(result)
     }
 }
 
@@ -45,7 +42,7 @@ impl NetworkCentral for ZtNetworkCentral {
         } else {
             // fail status msg
             let msg = resp.text()?;
-            log::debug!("message at NetworkCentral - find_network_list(): {}", msg.deref());
+            log::debug!("defined in file: {}, defined on line: {}\nmessage: {:?}", file!(), line!(), &msg);
             Err(anyhow!(msg))
         };
     }
@@ -98,10 +95,8 @@ impl NetworkCentral for ZtNetworkCentral {
             .delete(url.deref())
             .header(reqwest::header::AUTHORIZATION, bearer_token)
             .send()?;
-        if !resp.status().is_success() {
-            let msg = resp.text()?;
-            log::debug!("message at NetworkCentral - delete_network(): {}", msg.deref());
-            return Err(anyhow!(msg));
+        if let Some(x) = CentralResponseHandler::response_error_handler(&mut resp) {
+            return Err(anyhow!(x));
         }
         Ok(())
     }
@@ -119,9 +114,11 @@ impl ZtNetworkMemberCentral {
             client: reqwest::Client::new(),
         }
     }
+
 }
 
 impl NetworkMemberCentral for ZtNetworkMemberCentral {
+
     fn find_network_member_list(&self, network_id: &String) -> Result<Vec<NetworkMemberResult>> {
         let url = format!("https://my.zerotier.com/api/network/{}/member", network_id);
         let bearer_token = crate::format::BaseReqFormat::format_bearer_token(&self.token);
@@ -130,13 +127,11 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             .get(&url)
             .header(reqwest::header::AUTHORIZATION, bearer_token)
             .send()?;
-        if resp.status().is_success() {
-            let result = resp.json::<Vec<crate::NetworkMemberResult>>()?;
-            return Ok(result);
+        if let Some(x) = CentralResponseHandler::response_error_handler(&mut resp) {
+            return Err(anyhow!(x));
         }
-        let msg = resp.text()?;
-        log::debug!("message at NetworkMemberCentral - find_network_member_list(): {}", msg.deref());
-        Err(anyhow!(msg))
+        let result = resp.json::<Vec<NetworkMemberResult>>()?;
+        Ok(result)
     }
 
     fn find_member(&self, network_id: &String, member_id: &String) -> Result<NetworkMemberResult> {
@@ -150,13 +145,11 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             .get(url.deref())
             .header(reqwest::header::AUTHORIZATION, bearer_token)
             .send()?;
-        if resp.status().is_success() {
-            let result = resp.json::<crate::NetworkMemberResult>()?;
-            return Ok(result);
+        if let Some(x) = CentralResponseHandler::response_error_handler(&mut resp) {
+            return Err(anyhow!(x));
         }
-        let msg = resp.text()?;
-        log::debug!("message at NetworkMemberCentral - find_member(): {}", msg.deref());
-        Err(anyhow!(msg))
+        let result = resp.json::<NetworkMemberResult>()?;
+        Ok(result)
     }
 
     fn update_member(
@@ -177,13 +170,11 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             .header(reqwest::header::CONTENT_TYPE, "application/json")
             .json(&payload)
             .send()?;
-        if resp.status().is_success() {
-            let result = resp.json::<NetworkMemberResult>()?;
-            return Ok(result);
+        if let Some(x) = CentralResponseHandler::response_error_handler(&mut resp) {
+            return Err(anyhow!(x));
         }
-        let msg = resp.text()?;
-        log::debug!("message at NetworkMemberCentral - update_member(): {}", msg.deref());
-        Err(anyhow!(msg))
+        let result = resp.json::<NetworkMemberResult>()?;
+        Ok(result)
     }
 
     fn delete_member(&self, network_id: &String, member_id: &String) -> Result<()> {
@@ -197,11 +188,23 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
             .delete(url.deref())
             .header(reqwest::header::AUTHORIZATION, bearer_token)
             .send()?;
-        if !resp.status().is_success() {
-            let msg = resp.text()?;
-            log::debug!("message at NetworkMemberCentral - delete_member(): {}", msg.deref());
-            return Err(anyhow!(msg));
+        if let Some(x) = CentralResponseHandler::response_error_handler(&mut resp) {
+            return Err(anyhow!(x));
         }
         Ok(())
+    }
+
+}
+
+struct CentralResponseHandler;
+
+impl CentralResponseHandler {
+    fn response_error_handler(resp: &mut Response) -> Option<String> {
+        if !resp.status().is_success() {
+            let msg = resp.text().unwrap_or(String::from("An error occurred while extracting the body."));
+            log::debug!("defined in file: {}, defined on line: {}\nmessage: {:?}", file!(), line!(), &msg);
+            Some(msg);
+        }
+        None
     }
 }
