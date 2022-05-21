@@ -57,7 +57,7 @@ pub struct NetworkConfig {
     pub id: Option<String>,
 
     #[serde(default)]
-    pub ipAssignmentPools: Vec<IpAssignmentPools>,
+    pub ipAssignmentPools: Option<Vec<IpAssignmentPools>>,
 
     #[serde(default)]
     pub lastModified: i64,
@@ -151,7 +151,7 @@ pub struct V6AssignMode {
     pub zt: bool,
 }
 
-// update plaload
+// update payload
 #[derive(Debug, Serialize, Deserialize)]
 pub struct NetworkUpdatePayloadConfig {
     #[serde(default)]
