@@ -27,14 +27,14 @@ pub trait NetworkMemberCentral {
     ) -> crate::Result<Vec<crate::NetworkMemberResult>>;
 
     // Return an individual member on a network.
-    fn find_member(
+    fn find_network_member(
         &self,
         network_id: &String,
         member_id: &String,
     ) -> crate::Result<crate::NetworkMemberResult>;
 
     // Modify a network member.
-    fn update_member(
+    fn update_network_member(
         &self,
         network_id: &String,
         member_id: &String,
@@ -42,5 +42,5 @@ pub trait NetworkMemberCentral {
     ) -> crate::Result<crate::NetworkMemberResult>;
 
     // Delete a network member.
-    fn delete_member(&self, network_id: &String, member_id: &String) -> crate::Result<()>;
+    fn delete_network_member(&self, network_id: &String, member_id: &String) -> crate::Result<()>;
 }

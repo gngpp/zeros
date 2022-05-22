@@ -83,7 +83,11 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
         ResponseHandler::response_handler::<Vec<NetworkMemberResult>>(resp)
     }
 
-    fn find_member(&self, network_id: &String, member_id: &String) -> Result<NetworkMemberResult> {
+    fn find_network_member(
+        &self,
+        network_id: &String,
+        member_id: &String,
+    ) -> Result<NetworkMemberResult> {
         let url = format!(
             "https://my.zerotier.com/api/v1/network/{}/member/{}",
             network_id, member_id
@@ -93,7 +97,7 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
         ResponseHandler::response_handler::<NetworkMemberResult>(resp)
     }
 
-    fn update_member(
+    fn update_network_member(
         &self,
         network_id: &String,
         member_id: &String,
@@ -108,7 +112,7 @@ impl NetworkMemberCentral for ZtNetworkMemberCentral {
         ResponseHandler::response_handler::<NetworkMemberResult>(resp)
     }
 
-    fn delete_member(&self, network_id: &String, member_id: &String) -> Result<()> {
+    fn delete_network_member(&self, network_id: &String, member_id: &String) -> Result<()> {
         let url = format!(
             "https://my.zerotier.com/api/v1/network/{}/member/{}",
             network_id, member_id
