@@ -24,9 +24,6 @@ pub struct NetworkResult {
     pub rulesSource: Option<String>,
 
     #[serde(default)]
-    pub permissions: Option<String>,
-
-    #[serde(default)]
     pub ownerId: Option<String>,
 
     #[serde(default)]
@@ -37,9 +34,6 @@ pub struct NetworkResult {
 
     #[serde(default)]
     pub totalMemberCount: i64,
-
-    #[serde(default)]
-    pub ui: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
