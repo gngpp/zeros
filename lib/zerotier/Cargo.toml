@@ -12,9 +12,3 @@ reqwest = "0.9.5"
 serde = { version = "1.0.136", features = ["derive"] }
 log = "0.4.0"
 env_logger = "0.8.4"
-
-[[example]]
-name = "network_member"
-
-[[example]]
-name = "network"
