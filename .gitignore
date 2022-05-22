@@ -14,4 +14,3 @@ Cargo.lock
 
 /target
 .idea
-/lib/zerotier/examples/demo.rs
