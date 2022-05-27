@@ -14,10 +14,6 @@ jobs:
             core.setOutput('time', new Date(Date.now()).toISOString().replace(/[^0-9]/g, ""));
             core.setOutput('key', `${context.repo.owner}-${context.repo.repo}`);
             return context.repo.repo;
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
       - name: Cache src repos
         uses: actions/cache@v2.1.3
         id: cache
@@ -36,8 +32,4 @@ jobs:
           account_type: user
           debug: true
           force_update: true
-<<<<<<< HEAD
           static_list: 'zeros'
-=======
-          static_list: 'zeros'
->>>>>>> origin/main
