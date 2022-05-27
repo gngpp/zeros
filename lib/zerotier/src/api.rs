@@ -31,7 +31,7 @@ impl NetworkCentral for ZtNetworkCentral {
     fn create_network(&self) -> Result<NetworkResult> {
         let url = "https://my.zerotier.com/api/v1/network";
         let bearer_token = crate::format::BaseReqFormat::format_bearer_token(&self.token);
-        let resp = self.client.post(url.to_string(), bearer_token, "{}")?;
+        let resp = self.client.post(url.to_string(), bearer_token, std::collections::HashMap::from([("", "")]))?;
         ResponseHandler::response_handler::<NetworkResult>(resp)
     }
 
@@ -149,7 +149,7 @@ impl RequestClient {
             .post(url.deref())
             .header(reqwest::header::AUTHORIZATION, token)
             .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body("{}")
+            .json(&body)
             .send()?;
         Ok(resp)
     }
